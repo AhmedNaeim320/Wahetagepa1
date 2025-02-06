@@ -1,20 +1,20 @@
-<!DOCTYPE html>
-<!-- saved from url=(0086)file:///C:/Users/Ahmad%20N/Desktop/%D9%85%D8%B1%D9%8A%D9%85/waha-restaurant/index.html -->
-<html lang="ar"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    
+ !DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>واحة عجيبة للمأكولات البدوية والمندي</title>
-
-  <style>
+    <title>الرئيسية - واحة عجيبة</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
         body {
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
             text-align: center;
-            background-color: #FDF6E3;
+            background-color: #f8f8f8;
         }
         header {
-            background-color: #008000;
+            background-color: #f0a500;
             color: white;
             padding: 15px;
             box-shadow: 0 2px 5px rgba(0,0,0,0.2);
@@ -24,442 +24,200 @@
             display: block;
             margin: 0 auto 10px;
         }
-        .container {
-            width: 90%;
-            max-width: 800px;
-            margin: 20px auto;
-            background: PaleGreen;
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
             padding: 20px;
+        }
+        .gallery-item {
+            border: 1px solid #ddd;
             border-radius: 10px;
-            box-shadow: 0 0 15px rgba(0,0,0,0.1);
+            overflow: hidden;
+            background-color: #fff;
         }
-        .info-section {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            margin-bottom: 15px;
-            gap: 10px;
-        }
-        .info-section label {
-            margin: 5px;
-            flex: 1;
-            min-width: 200px;
-        }
-        .info-section input {
-            padding: 8px;
-            font-size: 14px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-        }
-        .info-section textarea {
-            padding: 8px;
-            font-size: 14px;
+        .gallery-item img {
             width: 100%;
-            height: 150px;
-            resize: vertical;
-            border: 1px solid #ddd;
-            border-radius: 5px;
+            height: 200px;
+            object-fit: cover;
         }
-        button {
-            background-color: #FBC02D;
-            color: BLACK;
-            border: none;
-            padding: 12px 18px;
-            font-size: 16px;
-            cursor: pointer;
-            border-radius: 8px;
-            transition: 0.3s;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
+        .gallery-item video {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
         }
-        button:hover {
-            background-color: #FF9800;
-        }
-        .top-buttons {
+        .nav-buttons {
+            margin: 20px;
             display: flex;
             justify-content: center;
-            flex-wrap: wrap;
             gap: 15px;
-            margin-bottom: 20px;
         }
-        .social-button {
-            background-color: #25d366;
-            padding: 12px 20px;
-            border-radius: 8px;
-            text-decoration: none;
-            font-size: 16px;
-            display: inline-flex;
-            align-items: center;
-        }
-        .social-button.facebook {
-            background-color: #1877f2;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 15px;
-            background: white;
-        }
-        th, td {
-            padding: 12px;
-            border: 1px solid #ddd;
-            text-align: center;
-        }
-        th {
+        .nav-buttons button {
+            padding: 15px 30px;
             background-color: #f0a500;
             color: white;
-        }
-        .delete-button {
-            background-color: #ff4d4d;
-        }
-        .add-button {
-            background-color: #008000;
-        }
-        .edit-button {
-            background-color: #007bff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 18px;
         }
         .action-buttons {
-            display: flex;
-            gap: 8px;
-            justify-content: center;
-        }
-        .section-buttons {
+            margin: 20px;
             display: flex;
             justify-content: center;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin-bottom: 25px;
+            gap: 20px;
         }
-        .items-table {
+        .action-buttons button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .action-buttons button.remove {
+            background-color: #f44336;
+        }
+        input[type="file"] {
             display: none;
-        }
-        .items-table.active {
-            display: table;
         }
     </style>
 </head>
 <body>
     <header>
-        <img src="file:///C:/Users/Ahmad%20N/Desktop/%D9%85%D8%B1%D9%8A%D9%85/waha-restaurant/logo.png" alt="لوجو واحة عجيبة" class="logo">
+        <img src="logo.png" alt="لوجو واحة عجيبة" class="logo">
         <h1>واحة عجيبة للمأكولات البدوية والمندي</h1>
-      </h1>🏡العنوان : سيدى عبد الرحمن امام مول مراسى 🗺️</h1>
-      <p>🍖أشهى المأكولات البدوية والمندي بانتظارك🍖 </p>
-        <div class="contact-info">
-            <p>  Ahmed Naeim | 📞TE : 📱 01062827188 : We Wating For Your Call</p>
-        </div>
+        <p>أشهى المأكولات البدوية والمندي بانتظارك!</p>
     </header>
-    
-    <div class="container">
-        <div class="top-buttons">
-            <a href="https://www.facebook.com/share/1Ap9eBbm3U/" target="_blank" class="social-button facebook">
-                <img src="file:///C:/Users/Ahmad%20N/Desktop/%D9%85%D8%B1%D9%8A%D9%85/waha-restaurant/facebook-icon.png" alt="فيسبوك" class="icon"> زيارة صفحة الفيسبوك
-            </a>
-            <button onclick="addNewItem()" class="add-button">
-                <img src="file:///C:/Users/Ahmad%20N/Desktop/%D9%85%D8%B1%D9%8A%D9%85/waha-restaurant/add-icon.png" alt="إضافة" class="icon"> إضافة صنف جديد
-            </button>
-            <button onclick="addNewSection()" class="add-button">
-                <img src="file:///C:/Users/Ahmad%20N/Desktop/%D9%85%D8%B1%D9%8A%D9%85/waha-restaurant/add-icon.png" alt="إضافة" class="icon"> إضافة قسم جديد
-            </button>
-            <a href="https://wa.me/201062827188" target="_blank" class="social-button">
-                <img src="file:///C:/Users/Ahmad%20N/Desktop/%D9%85%D8%B1%D9%8A%D9%85/waha-restaurant/whatsapp-icon.png" alt="واتساب" class="icon"> اطلب عبر واتساب
-            </a>
-        </div>
-        
-        <h2>🛒إضــــــــــــــــــــــــــــــــــــــــــــــــــافة الطلب🛒</h2>
-        <div class="info-section">
-            <label>رقم الفاتورة: <span id="invoiceNumber">#47286</span></label>
-            <label>🧑‍🍽️اسم الكابتن:🧑‍🍽️ <input type="text" id="captainName" placeholder="أدخل اسم الكابتن"></label>
-            <label>🪑رقم الطاولة🪑: <input type="text" id="tableNumber" placeholder="أدخل رقم الطاولة"></label>
-        </div>
-        <label>ملاحظات: <textarea id="invoiceNotes" placeholder="أدخل ملاحظاتك..."></textarea></label>
-        
-        <div class="section-buttons" id="sectionButtons">
-            <button onclick="showSection(&#39;kitchen&#39;)" class="active">المطبخ</button>
-            <button onclick="showSection(&#39;grill&#39;)" class="">الشواية</button>
-            <button onclick="showSection(&#39;butcher&#39;)" class="">الجزارة</button>
-        </div>
-        
-        <!-- جداول الأقسام -->
-        <table id="kitchenTable" class="items-table active">
-            <tbody>
-                <tr>
-                    <th>الصنف</th>
-                    <th>السعر</th>
-                    <th>الكمية</th>
-                    <th>إجراءات</th>
-                </tr>
-            
-                <tr>
-                    <td>مبكبكة ضانى</td>
-                    <td>400</td>
-                    <td><input type="number" value="1"></td>
-                    <td>
-                        <div class="action-buttons">
-                            <button onclick="addToInvoice(&#39;مبكبكة ضانى&#39;, 400, this)" class="add-button">إضافة</button>
-                            <button onclick="editItem(this)" class="edit-button">تعديل</button>
-                            <button onclick="deleteItem(this)" class="delete-button">حذف</button>
-                        </div>
-                    </td>
-                </tr>
-            
-                <tr>
-                    <td>فراخ مندى</td>
-                    <td>200</td>
-                    <td><input type="number" value="1"></td>
-                    <td>
-                        <div class="action-buttons">
-                            <button onclick="addToInvoice(&#39;فراخ مندى&#39;, 200, this)" class="add-button">إضافة</button>
-                            <button onclick="editItem(this)" class="edit-button">تعديل</button>
-                            <button onclick="deleteItem(this)" class="delete-button">حذف</button>
-                        </div>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-        
-        <table id="grillTable" class="items-table">
-            <tbody>
-                <tr>
-                    <th>الصنف</th>
-                    <th>السعر</th>
-                    <th>الكمية</th>
-                    <th>إجراءات</th>
-                </tr>
-            
-                <tr>
-                    <td>كباب ضانى</td>
-                    <td>300</td>
-                    <td><input type="number" value="1"></td>
-                    <td>
-                        <div class="action-buttons">
-                            <button onclick="addToInvoice(&#39;كباب ضانى&#39;, 300, this)" class="add-button">إضافة</button>
-                            <button onclick="editItem(this)" class="edit-button">تعديل</button>
-                            <button onclick="deleteItem(this)" class="delete-button">حذف</button>
-                        </div>
-                    </td>
-                </tr>
-            
-                <tr>
-                    <td>كفتة ضانى</td>
-                    <td>300</td>
-                    <td><input type="number" value="1"></td>
-                    <td>
-                        <div class="action-buttons">
-                            <button onclick="addToInvoice(&#39;كفتة ضانى&#39;, 300, this)" class="add-button">إضافة</button>
-                            <button onclick="editItem(this)" class="edit-button">تعديل</button>
-                            <button onclick="deleteItem(this)" class="delete-button">حذف</button>
-                        </div>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-        
-        <table id="butcherTable" class="items-table">
-            <tbody>
-                <tr>
-                    <th>الصنف</th>
-                    <th>السعر</th>
-                    <th>الكمية</th>
-                    <th>إجراءات</th>
-                </tr>
-            
-                <tr>
-                    <td>لحمة ضانى</td>
-                    <td>200</td>
-                    <td><input type="number" value="1"></td>
-                    <td>
-                        <div class="action-buttons">
-                            <button onclick="addToInvoice(&#39;لحمة ضانى&#39;, 200, this)" class="add-button">إضافة</button>
-                            <button onclick="editItem(this)" class="edit-button">تعديل</button>
-                            <button onclick="deleteItem(this)" class="delete-button">حذف</button>
-                        </div>
-                    </td>
-                </tr>
-            
-                <tr>
-                    <td>كبدة ضانى</td>
-                    <td>500</td>
-                    <td><input type="number" value="1"></td>
-                    <td>
-                        <div class="action-buttons">
-                            <button onclick="addToInvoice(&#39;كبدة ضانى&#39;, 500, this)" class="add-button">إضافة</button>
-                            <button onclick="editItem(this)" class="edit-button">تعديل</button>
-                            <button onclick="deleteItem(this)" class="delete-button">حذف</button>
-                        </div>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-        
-        <div class="invoice-details">
-            <h2>🛒 اصناف الفاتورة</h2>
 
-            <table id="invoiceTable">
-                <tbody>
-                    <tr>
-                        <th>الصنف</th>
-                        <th>الكمية</th>
-                        <th>السعر</th>
-                        <th>حذف</th>
-                    </tr>
-                </tbody>
-            </table>
-            <p><strong>المجموع:</strong> <span id="totalPrice">0</span> جنيه</p>
-        </div>
+    <div class="nav-buttons">
+        <button onclick="window.location.href='orders.html'"><i class="fas fa-utensils"></i> الطلبات</button>
+        <button onclick="window.location.href='offers.html'"><i class="fas fa-gift"></i> العروض</button>
+        <button onclick="window.location.href='menu.html'"><i class="fas fa-list"></i> القائمة</button>
     </div>
-    
+
+    <h1>معرض الصور والفيديوهات</h1>
+    <div class="gallery" id="gallery">
+        <!-- سيتم إضافة الصور والفيديوهات هنا -->
+    </div>
+
+    <div class="action-buttons">
+        <button onclick="document.getElementById('imageInput').click()"><i class="fas fa-image"></i> إضافة صورة</button>
+        <button onclick="document.getElementById('videoInput').click()"><i class="fas fa-video"></i> إضافة فيديو</button>
+        <button onclick="removeImage()"><i class="fas fa-trash-alt"></i> إزالة صورة</button>
+        <button onclick="removeVideo()"><i class="fas fa-trash-alt"></i> إزالة فيديو</button>
+    </div>
+
+    <!-- عناصر الإدخال للملفات -->
+    <input type="file" id="imageInput" accept="image/*" onchange="addImage(event)">
+    <input type="file" id="videoInput" accept="video/*" onchange="addVideo(event)">
+
     <script>
-        let items = {}; // تخزين الأصناف لكل قسم
-        let currentSection = 'kitchen';
+        // دالة لإضافة صورة
+        function addImage(event) {
+            var file = event.target.files[0];
+            if (file) {
+                var gallery = document.getElementById("gallery");
+                var newImageDiv = document.createElement("div");
+                newImageDiv.className = "gallery-item";
+                var newImage = document.createElement("img");
+                newImage.src = URL.createObjectURL(file); // استخدام رابط الملف المحلي
+                newImage.alt = "صورة جديدة";
+                newImageDiv.appendChild(newImage);
+                gallery.appendChild(newImageDiv);
 
-        // تهيئة الأقسام الأولية
-        function initializeSections() {
-            items = {
-                kitchen: new Set(),
-                grill: new Set(),
-                butcher: new Set()
-            };
-        }
-
-        function generateInvoiceNumber() {
-            document.getElementById("invoiceNumber").textContent = "#" + Math.floor(Math.random() * 1000000);
-        }
-
-        function addToInvoice(itemName, price, button) {
-            let row = button.closest('tr');
-            let quantity = row.querySelector('input[type="number"]').value;
-            if (quantity <= 0) return alert("الكمية يجب أن تكون أكبر من الصفر");
-            
-            let invoiceTable = document.getElementById("invoiceTable");
-            let newRow = invoiceTable.insertRow();
-            
-            newRow.innerHTML = `
-                <td>${itemName}</td>
-                <td>${quantity}</td>
-                <td>${price * quantity}</td>
-                <td><button class="delete-button" onclick="this.closest('tr').remove(); updateTotal()">حذف</button></td>
-            `;
-            
-            updateTotal();
-        }
-
-        function updateTotal() {
-            let total = Array.from(document.querySelectorAll('#invoiceTable tr:not(:first-child)'))
-                          .reduce((sum, row) => sum + parseInt(row.cells[2].textContent), 0);
-            document.getElementById("totalPrice").textContent = total;
-        }
-
-        function addNewItem() {
-            let secretCode = prompt("أدخل الرقم السري لإضافة صنف جديد:");
-            if (secretCode !== "1234") return alert("الرقم السري غير صحيح");
-            
-            let newItem = prompt("أدخل اسم الصنف الجديد:");
-            let price = prompt("أدخل سعر الصنف:");
-            
-            if (!newItem || !price) return;
-
-            // التحقق من التكرار داخل القسم الحالي
-            if (items[currentSection].has(newItem)) {
-                return alert("هذا الصنف موجود بالفعل في القسم الحالي!");
-            }
-
-            items[currentSection].add(newItem);
-
-            let table = document.getElementById(currentSection + 'Table');
-            let tbody = table.querySelector('tbody');
-            
-            tbody.innerHTML += `
-                <tr>
-                    <td>${newItem}</td>
-                    <td>${price}</td>
-                    <td><input type="number" value="1"></td>
-                    <td>
-                        <div class="action-buttons">
-                            <button onclick="addToInvoice('${newItem}', ${price}, this)" class="add-button">إضافة</button>
-                            <button onclick="editItem(this)" class="edit-button">تعديل</button>
-                            <button onclick="deleteItem(this)" class="delete-button">حذف</button>
-                        </div>
-                    </td>
-                </tr>
-            `;
-        }
-
-        function addNewSection() {
-            let secretCode = prompt("ليس لديك الصلاحية لهذا القسم :: ان اكان لديك رقم سرى ادخلة من فضلك:");
-            if (secretCode !== "1234") return alert("الرقم السري غير صحيح");
-            
-            let sectionName = prompt("أدخل اسم القسم الجديد:");
-            if (!sectionName) return;
-            
-            let sectionId = sectionName.replace(/\s+/g, '').toLowerCase();
-            let sectionButtons = document.getElementById("sectionButtons");
-            
-            // إنشاء زر قسم جديد
-            let newButton = document.createElement("button");
-            newButton.textContent = sectionName;
-            newButton.onclick = () => showSection(sectionId);
-            sectionButtons.appendChild(newButton);
-
-            // إنشاء جدول القسم الجديد
-            let newTable = document.createElement("table");
-            newTable.className = 'items-table';
-            newTable.id = sectionId + 'Table';
-            newTable.innerHTML = `
-                <tbody>
-                    <tr>
-                        <th>الصنف</th>
-                        <th>السعر</th>
-                        <th>الكمية</th>
-                        <th>إجراءات</th>
-                    </tr>
-                </tbody>
-            `;
-            
-            document.querySelector('.container').insertBefore(newTable, document.querySelector('.invoice-details'));
-            items[sectionId] = new Set();
-            showSection(sectionId);
-        }
-
-        function editItem(button) {
-            let row = button.closest('tr');
-            let itemName = row.cells[0].textContent;
-            let currentPrice = row.cells[1].textContent;
-            
-            let newName = prompt("الاسم الجديد:", itemName);
-            let newPrice = prompt("السعر الجديد:", currentPrice);
-            
-            if (newName && newPrice) {
-                items[currentSection].delete(itemName);
-                items[currentSection].add(newName);
-                row.cells[0].textContent = newName;
-                row.cells[1].textContent = newPrice;
-                row.querySelector('.add-button').setAttribute('onclick', `addToInvoice('${newName}', ${newPrice}, this)`);
+                // حفظ الصورة في localStorage
+                var images = JSON.parse(localStorage.getItem('images')) || [];
+                images.push(newImage.src);
+                localStorage.setItem('images', JSON.stringify(images));
             }
         }
 
-        function deleteItem(button) {
-            if (confirm("هل أنت متأكد من حذف هذا الصنف؟")) {
-                let row = button.closest('tr');
-                let itemName = row.cells[0].textContent;
-                items[currentSection].delete(itemName);
-                row.remove();
+        // دالة لإضافة فيديو
+        function addVideo(event) {
+            var file = event.target.files[0];
+            if (file) {
+                var gallery = document.getElementById("gallery");
+                var newVideoDiv = document.createElement("div");
+                newVideoDiv.className = "gallery-item";
+                var newVideo = document.createElement("video");
+                newVideo.controls = true;
+                var source = document.createElement("source");
+                source.src = URL.createObjectURL(file); // استخدام رابط الملف المحلي
+                source.type = file.type;
+                newVideo.appendChild(source);
+                newVideoDiv.appendChild(newVideo);
+                gallery.appendChild(newVideoDiv);
+
+                // حفظ الفيديو في localStorage
+                var videos = JSON.parse(localStorage.getItem('videos')) || [];
+                videos.push(newVideo.src);
+                localStorage.setItem('videos', JSON.stringify(videos));
             }
         }
 
-        function showSection(sectionId) {
-            document.querySelectorAll('.items-table').forEach(t => t.classList.remove('active'));
-            document.getElementById(sectionId + 'Table').classList.add('active');
-            document.querySelectorAll('.section-buttons button').forEach(b => b.classList.remove('active'));
-            event.target.classList.add('active');
-            currentSection = sectionId;
+        // دالة لإزالة صورة
+        function removeImage() {
+            var gallery = document.getElementById("gallery");
+            var images = gallery.getElementsByTagName("img");
+            if (images.length > 0) {
+                gallery.removeChild(images[images.length - 1].parentElement);
+                
+                // إزالة آخر صورة من localStorage
+                var imagesData = JSON.parse(localStorage.getItem('images')) || [];
+                imagesData.pop();
+                localStorage.setItem('images', JSON.stringify(imagesData));
+            } else {
+                alert("لا توجد صور لإزالتها");
+            }
         }
 
-        window.onload = () => {
-            initializeSections();
-            generateInvoiceNumber();
+        // دالة لإزالة فيديو
+        function removeVideo() {
+            var gallery = document.getElementById("gallery");
+            var videos = gallery.getElementsByTagName("video");
+            if (videos.length > 0) {
+                gallery.removeChild(videos[videos.length - 1].parentElement);
+                
+                // إزالة آخر فيديو من localStorage
+                var videosData = JSON.parse(localStorage.getItem('videos')) || [];
+                videosData.pop();
+                localStorage.setItem('videos', JSON.stringify(videosData));
+            } else {
+                alert("لا توجد فيديوهات لإزالتها");
+            }
+        }
+
+        // تحميل الصور والفيديوهات المحفوظة عند تحميل الصفحة
+        window.onload = function() {
+            var images = JSON.parse(localStorage.getItem('images')) || [];
+            var videos = JSON.parse(localStorage.getItem('videos')) || [];
+            
+            // إضافة الصور المحفوظة إلى المعرض
+            var gallery = document.getElementById("gallery");
+            images.forEach(function(imageSrc) {
+                var newImageDiv = document.createElement("div");
+                newImageDiv.className = "gallery-item";
+                var newImage = document.createElement("img");
+                newImage.src = imageSrc;
+                newImage.alt = "صورة محفوظة";
+                newImageDiv.appendChild(newImage);
+                gallery.appendChild(newImageDiv);
+            });
+
+            // إضافة الفيديوهات المحفوظة إلى المعرض
+            videos.forEach(function(videoSrc) {
+                var newVideoDiv = document.createElement("div");
+                newVideoDiv.className = "gallery-item";
+                var newVideo = document.createElement("video");
+                newVideo.controls = true;
+                var source = document.createElement("source");
+                source.src = videoSrc;
+                newVideo.appendChild(source);
+                newVideoDiv.appendChild(newVideo);
+                gallery.appendChild(newVideoDiv);
+            });
         };
     </script>
-
-</body></html>
+</body>
+</html>
