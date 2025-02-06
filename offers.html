@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>عروض واحة عجيبة</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+            background-color: #f8f8f8;
+            background-image: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="2000" height="200" viewBox="0 0 2000 200"%3E%3Ctext x="50%" y="50%" font-family="Arial" font-size="80" fill="red" text-anchor="middle" dy=".3em"%3Eواحة عجيبة%3C/text%3E%3C/svg%3E');
+            background-repeat: repeat;
+            background-position: center;
+        }
+
+        header {
+            background-color: #f0a500;
+            color: white;
+            padding: 15px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo {
+            width: 120px;
+        }
+        .header-buttons button {
+            background-color: white;
+            color: #f0a500;
+            border: none;
+            padding: 10px 20px;
+            font-size: 18px;
+            cursor: pointer;
+            border-radius: 5px;
+            margin: 0 5px;
+        }
+        .header-buttons button:hover {
+            background-color: #ffd27d;
+            transform: scale(1.1);
+        }
+
+        .settings-button {
+            background-color: white;
+            color: #f0a500;
+            border: none;
+            padding: 10px 20px;
+            font-size: 18px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        .settings-button:hover {
+            background-color: #ffd27d;
+            transform: scale(1.1);
+        }
+
+        .control-panel {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin: 20px;
+        }
+
+        .wheel-container {
+            margin: 20px auto;
+            position: relative;
+            width: 300px;
+            height: 300px;
+        }
+        .wheel {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            position: relative;
+            transition: transform 0.5s ease-out;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .wheel span {
+            position: absolute;
+            font-weight: bold;
+            font-size: 14px;
+            transform-origin: center;
+            white-space: nowrap;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            line-height: 1.5;
+            max-width: 80px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            transform: rotate(0deg);
+        }
+        .pointer {
+            width: 0;
+            height: 0;
+            border-left: 15px solid transparent;
+            border-right: 15px solid transparent;
+            border-top: 30px solid black;
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        .celebration {
+            display: none;
+            font-size: 24px;
+            color: #f0a500;
+            margin-top: 20px;
+            font-weight: bold;
+        }
+        .celebration-animation {
+            animation: celebrationAnimation 1s ease-in-out infinite;
+        }
+        @keyframes celebrationAnimation {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); color: #ff0; }
+            100% { transform: scale(1); }
+        }
+
+        .edit-section-panel,
+        .settings-panel {
+            margin: 20px;
+            display: none; /* إخفاء الأزرار والإجراءات عند التحميل */
+        }
+        .settings-panel input {
+            padding: 10px;
+            font-size: 18px;
+            margin: 10px;
+            width: 200px;
+        }
+        .settings-panel button {
+            background-color: #f0a500;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 18px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        .settings-panel button:hover {
+            background-color: #ffd27d;
+        }
+        .control-panel .hidden {
+            display: none;
+        }
+
+        .control-panel button {
+            background-color: #f0a500;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 18px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        .control-panel button:hover {
+            background-color: #ffd27d;
+            transform: scale(1.1);
+        }
+
+        .spin-button {
+            font-size: 30px;
+            padding: 20px 40px;
+            background-color: #ff6600;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            font-weight: bold;
+            margin-top: 20px;
+            transition: all 0.3s ease;
+        }
+        .spin-button:hover {
+            background-color: #ff9900;
+            transform: scale(1.1);
+        }
+        .spin-button:active {
+            background-color: #ffcc00;
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <img src="logo.png" alt="لوجو واحة عجيبة" class="logo">
+        <div class="header-buttons">
+            <button onclick="window.location.href='index.html'">🏠 الرئيسية</button>
+            <button onclick="window.location.href='menu.html'">📜 القائمة</button>
+            <button onclick="window.location.href='orders.html'">🛒 الطلبات</button>
+        </div>
+        <button class="settings-button" onclick="toggleSettingsPanel()">⚙️ الإعدادات</button>
+    </header>
+
+    <div class="control-panel">
+        <div id="controlFields" class="hidden">
+            <input type="password" id="secretCode" placeholder="أدخل الرقم السري" style="padding: 10px; font-size: 18px;">
+            <button onclick="addWheelSection()">➕ إضافة قسم</button>
+            <input type="text" id="sectionName" placeholder="اسم القسم" style="padding: 10px; font-size: 18px;">
+            <input type="color" id="sectionColor" value="#ff0000" style="padding: 10px;">
+        </div>
+
+        <div id="editPanel" class="hidden">
+            <select id="editAction" style="padding: 10px; font-size: 18px;">
+                <option value="">اختر العملية</option>
+                <option value="changeName">تغيير اسم القسم</option>
+                <option value="changeColor">تغيير لون القسم</option>
+                <option value="deleteSection">حذف القسم</option>
+            </select>
+            <select id="selectSection" style="padding: 10px; font-size: 18px;">
+                <option value="">اختر القسم</option>
+            </select>
+            <button onclick="executeEdit()" style="padding: 10px; font-size: 18px; background-color: #ff6600; color: white; border: none; border-radius: 5px;">تنفيذ العملية</button>
+        </div>
+    </div>
+
+    <div class="wheel-container">
+        <div class="wheel" id="wheel"></div>
+        <div class="pointer"></div>
+    </div>
+
+    <button class="spin-button" onclick="spinWheel()" id="spinButton">🎡 تدوير العجلة</button>
+    <div class="celebration" id="celebration">🎉 مبروك! لقد فزت! 🎉</div>
+
+    <script>
+        let attempts = 1;
+        let sections = JSON.parse(localStorage.getItem("wheelSections")) || [];
+        const wheel = document.getElementById("wheel");
+        const spinButton = document.getElementById("spinButton");
+        const celebration = document.getElementById("celebration");
+        const winSound = new Audio('win-sound.mp3');
+        const spinSound = new Audio('spin-sound.mp3');
+        
+        if (sections.length > 0) {
+            updateWheelDesign();
+            populateSectionsForEdit();
+        }
+
+        function toggleSettingsPanel() {
+            const secretCode = prompt("أدخل الرقم السري:");
+
+            if (secretCode !== "1234") {
+                alert("الرقم السري غير صحيح!");
+                return;
+            }
+
+            const controlFields = document.getElementById("controlFields");
+            const editPanel = document.getElementById("editPanel");
+
+            controlFields.classList.toggle("hidden");
+            editPanel.classList.toggle("hidden");
+        }
+
+        function addWheelSection() {
+            const name = document.getElementById('sectionName').value;
+            const color = document.getElementById('sectionColor').value;
+            if (name) {
+                sections.push({ name, color });
+                localStorage.setItem("wheelSections", JSON.stringify(sections));
+                alert("تم إضافة القسم بنجاح!");
+                updateWheelDesign();
+                populateSectionsForEdit();
+            }
+        }
+
+        function updateWheelDesign() {
+            wheel.innerHTML = '';
+            let gradient = sections.map((sec, i) => `${sec.color} ${(i * 360 / sections.length)}deg ${(i + 1) * 360 / sections.length}deg`).join(", ");
+            wheel.style.background = `conic-gradient(${gradient})`;
+            sections.forEach((sec, i) => {
+                const span = document.createElement('span');
+                span.textContent = sec.name;
+                let angle = (i * 360 / sections.length) + (360 / (2 * sections.length));
+                span.style.transform = `rotate(${angle}deg) translate(120px) rotate(${angle}deg)`;
+                wheel.appendChild(span);
+            });
+        }
+
+        function populateSectionsForEdit() {
+            const selectSection = document.getElementById("selectSection");
+            selectSection.innerHTML = '<option value="">اختر القسم</option>';
+            sections.forEach((sec, i) => {
+                const option = document.createElement("option");
+                option.value = i;
+                option.textContent = sec.name;
+                selectSection.appendChild(option);
+            });
+        }
+
+        function executeEdit() {
+            const action = document.getElementById("editAction").value;
+            const sectionIndex = document.getElementById("selectSection").value;
+
+            if (sectionIndex === "" || !action) {
+                alert("يرجى اختيار القسم ونوع العملية!");
+                return;
+            }
+
+            switch (action) {
+                case "changeName":
+                    const newName = prompt("أدخل الاسم الجديد للقسم:");
+                    if (newName) {
+                        sections[sectionIndex].name = newName;
+                        localStorage.setItem("wheelSections", JSON.stringify(sections));
+                        updateWheelDesign();
+                    }
+                    break;
+                case "changeColor":
+                    const newColor = prompt("أدخل اللون الجديد للقسم (بالصيغ: #RRGGBB):");
+                    if (newColor) {
+                        sections[sectionIndex].color = newColor;
+                        localStorage.setItem("wheelSections", JSON.stringify(sections));
+                        updateWheelDesign();
+                    }
+                    break;
+                case "deleteSection":
+                    sections.splice(sectionIndex, 1);
+                    localStorage.setItem("wheelSections", JSON.stringify(sections));
+                    updateWheelDesign();
+                    populateSectionsForEdit();
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        function spinWheel() {
+            if (attempts <= 0 || sections.length === 0) return;
+
+            const randomDegree = Math.floor(Math.random() * 360) + 1080;
+            spinSound.play();
+            wheel.style.transform = `rotate(${randomDegree}deg)`;
+
+            setTimeout(() => {
+                const resultIndex = Math.floor(((randomDegree % 360) / 360) * sections.length);
+                const result = sections[resultIndex]?.name || "بدون نتيجة";
+
+                celebration.textContent = `🎉 مبروك! لقد فزت في قسم: ${result} 🎉`;
+                celebration.classList.add("celebration-animation");
+                celebration.style.display = "block";
+                spinButton.disabled = true;
+
+                winSound.play();
+            }, 1000);
+
+            attempts--;
+        }
+    </script>
+</body>
+</html>

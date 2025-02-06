@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الرئيسية - واحة عجيبة</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+            background-color: #f8f8f8;
+        }
+        header {
+            background-color: #f0a500;
+            color: white;
+            padding: 15px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        .logo {
+            width: 120px;
+            display: block;
+            margin: 0 auto 10px;
+        }
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            padding: 20px;
+        }
+        .gallery-item {
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            overflow: hidden;
+            background-color: #fff;
+        }
+        .gallery-item img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+        .gallery-item video {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+        .nav-buttons {
+            margin: 20px;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+        .nav-buttons button {
+            padding: 15px 30px;
+            background-color: #f0a500;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 18px;
+        }
+        .action-buttons {
+            margin: 20px;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+        .action-buttons button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .action-buttons button.remove {
+            background-color: #f44336;
+        }
+        input[type="file"] {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <img src="logo.png" alt="لوجو واحة عجيبة" class="logo">
+        <h1>واحة عجيبة للمأكولات البدوية والمندي</h1>
+        <p>أشهى المأكولات البدوية والمندي بانتظارك!</p>
+    </header>
+
+    <div class="nav-buttons">
+        <button onclick="window.location.href='orders.html'"><i class="fas fa-utensils"></i> الطلبات</button>
+        <button onclick="window.location.href='offers.html'"><i class="fas fa-gift"></i> العروض</button>
+        <button onclick="window.location.href='menu.html'"><i class="fas fa-list"></i> القائمة</button>
+    </div>
+
+    <h1>معرض الصور والفيديوهات</h1>
+    <div class="gallery" id="gallery">
+        <!-- سيتم إضافة الصور والفيديوهات هنا -->
+    </div>
+
+    <div class="action-buttons">
+        <button onclick="document.getElementById('imageInput').click()"><i class="fas fa-image"></i> إضافة صورة</button>
+        <button onclick="document.getElementById('videoInput').click()"><i class="fas fa-video"></i> إضافة فيديو</button>
+        <button onclick="removeImage()"><i class="fas fa-trash-alt"></i> إزالة صورة</button>
+        <button onclick="removeVideo()"><i class="fas fa-trash-alt"></i> إزالة فيديو</button>
+    </div>
+
+    <!-- عناصر الإدخال للملفات -->
+    <input type="file" id="imageInput" accept="image/*" onchange="addImage(event)">
+    <input type="file" id="videoInput" accept="video/*" onchange="addVideo(event)">
+
+    <script>
+        // دالة لإضافة صورة
+        function addImage(event) {
+            var file = event.target.files[0];
+            if (file) {
+                var gallery = document.getElementById("gallery");
+                var newImageDiv = document.createElement("div");
+                newImageDiv.className = "gallery-item";
+                var newImage = document.createElement("img");
+                newImage.src = URL.createObjectURL(file); // استخدام رابط الملف المحلي
+                newImage.alt = "صورة جديدة";
+                newImageDiv.appendChild(newImage);
+                gallery.appendChild(newImageDiv);
+
+                // حفظ الصورة في localStorage
+                var images = JSON.parse(localStorage.getItem('images')) || [];
+                images.push(newImage.src);
+                localStorage.setItem('images', JSON.stringify(images));
+            }
+        }
+
+        // دالة لإضافة فيديو
+        function addVideo(event) {
+            var file = event.target.files[0];
+            if (file) {
+                var gallery = document.getElementById("gallery");
+                var newVideoDiv = document.createElement("div");
+                newVideoDiv.className = "gallery-item";
+                var newVideo = document.createElement("video");
+                newVideo.controls = true;
+                var source = document.createElement("source");
+                source.src = URL.createObjectURL(file); // استخدام رابط الملف المحلي
+                source.type = file.type;
+                newVideo.appendChild(source);
+                newVideoDiv.appendChild(newVideo);
+                gallery.appendChild(newVideoDiv);
+
+                // حفظ الفيديو في localStorage
+                var videos = JSON.parse(localStorage.getItem('videos')) || [];
+                videos.push(newVideo.src);
+                localStorage.setItem('videos', JSON.stringify(videos));
+            }
+        }
+
+        // دالة لإزالة صورة
+        function removeImage() {
+            var gallery = document.getElementById("gallery");
+            var images = gallery.getElementsByTagName("img");
+            if (images.length > 0) {
+                gallery.removeChild(images[images.length - 1].parentElement);
+                
+                // إزالة آخر صورة من localStorage
+                var imagesData = JSON.parse(localStorage.getItem('images')) || [];
+                imagesData.pop();
+                localStorage.setItem('images', JSON.stringify(imagesData));
+            } else {
+                alert("لا توجد صور لإزالتها");
+            }
+        }
+
+        // دالة لإزالة فيديو
+        function removeVideo() {
+            var gallery = document.getElementById("gallery");
+            var videos = gallery.getElementsByTagName("video");
+            if (videos.length > 0) {
+                gallery.removeChild(videos[videos.length - 1].parentElement);
+                
+                // إزالة آخر فيديو من localStorage
+                var videosData = JSON.parse(localStorage.getItem('videos')) || [];
+                videosData.pop();
+                localStorage.setItem('videos', JSON.stringify(videosData));
+            } else {
+                alert("لا توجد فيديوهات لإزالتها");
+            }
+        }
+
+        // تحميل الصور والفيديوهات المحفوظة عند تحميل الصفحة
+        window.onload = function() {
+            var images = JSON.parse(localStorage.getItem('images')) || [];
+            var videos = JSON.parse(localStorage.getItem('videos')) || [];
+            
+            // إضافة الصور المحفوظة إلى المعرض
+            var gallery = document.getElementById("gallery");
+            images.forEach(function(imageSrc) {
+                var newImageDiv = document.createElement("div");
+                newImageDiv.className = "gallery-item";
+                var newImage = document.createElement("img");
+                newImage.src = imageSrc;
+                newImage.alt = "صورة محفوظة";
+                newImageDiv.appendChild(newImage);
+                gallery.appendChild(newImageDiv);
+            });
+
+            // إضافة الفيديوهات المحفوظة إلى المعرض
+            videos.forEach(function(videoSrc) {
+                var newVideoDiv = document.createElement("div");
+                newVideoDiv.className = "gallery-item";
+                var newVideo = document.createElement("video");
+                newVideo.controls = true;
+                var source = document.createElement("source");
+                source.src = videoSrc;
+                newVideo.appendChild(source);
+                newVideoDiv.appendChild(newVideo);
+                gallery.appendChild(newVideoDiv);
+            });
+        };
+    </script>
+</body>
+</html>

@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>القائمة - واحة عجيبة</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+            background-color: #f8f8f8;
+        }
+        header {
+            background-color: #f0a500;
+            color: white;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            position: relative;
+        }
+        header button {
+            font-size: 22px;
+            padding: 20px 35px;
+            border-radius: 10px;
+            cursor: pointer;
+            border: none;
+            background-color: #ffcc00;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        header button:hover {
+            background-color: #e69500;
+            transform: translateY(-2px);
+        }
+        .category-buttons {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            justify-content: center;
+            padding: 15px;
+        }
+        .category-btn {
+            position: relative;
+            font-size: 22px;
+            padding: 15px 30px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .category-btn:hover {
+            opacity: 0.9;
+            transform: scale(1.05);
+        }
+        .menu-section {
+            display: none;
+            padding: 20px;
+        }
+        .menu-section.active {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+        }
+        .menu-item {
+            border: 1px solid #ddd;
+            padding: 15px;
+            border-radius: 10px;
+            background: white;
+            width: 200px;
+            text-align: center;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        .menu-item:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        .menu-item img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+        .dropdown {
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            display: none;
+            flex-direction: column;
+            width: 140px;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        .dropdown button {
+            background: none;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            text-align: right;
+            transition: all 0.2s ease;
+        }
+        .dropdown button:hover {
+            background-color: #f5f5f5;
+        }
+        .dropdown-btn {
+            background-color: #f0a500 !important;
+            color: white !important;
+            border: none;
+            padding: 10px;
+            width: 120px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 5px;
+            transition: all 0.3s ease;
+        }
+        .dropdown-btn:hover {
+            background-color: #e69500 !important;
+        }
+        .category-settings {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            display: none;
+            flex-direction: column;
+            min-width: 200px;
+            z-index: 1001;
+            margin-top: 5px;
+        }
+        .category-settings button {
+            padding: 10px;
+            text-align: right;
+        }
+        .password-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+        .password-box {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        .password-box button {
+            margin: 5px;
+            padding: 10px 20px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="password-modal" id="passwordModal">
+        <div class="password-box">
+            <h3>الرجاء إدخال الرقم السري</h3>
+            <input type="password" id="passwordInput">
+            <button onclick="submitPassword()">تأكيد</button>
+            <button onclick="closePasswordModal()">خروج</button>
+        </div>
+    </div>
+
+    <header>
+        <button onclick="goHome()">🏠 الرئيسية</button>
+        <button onclick="showPasswordModal('addCategory')">➕ إضافة قسم</button>
+        <button onclick="showPasswordModal('addItem')">🍽️ إضافة صنف</button>
+    </header>
+
+    <div class="category-buttons" id="categoryButtons"></div>
+    <div id="menuContainer"></div>
+
+    <script>
+        let categories = JSON.parse(localStorage.getItem('categories')) || [];
+        let menuItems = JSON.parse(localStorage.getItem('menuItems')) || [];
+        let pendingAction = null;
+        const PASSWORD = "1234";
+
+        function saveData() {
+            localStorage.setItem('categories', JSON.stringify(categories));
+            localStorage.setItem('menuItems', JSON.stringify(menuItems));
+        }
+
+        function showPasswordModal(action) {
+            pendingAction = action;
+            document.getElementById('passwordModal').style.display = 'flex';
+        }
+
+        function closePasswordModal() {
+            document.getElementById('passwordModal').style.display = 'none';
+        }
+
+        function submitPassword() {
+            const input = document.getElementById('passwordInput').value;
+            if (input === PASSWORD) {
+                closePasswordModal();
+                executePendingAction();
+            } else {
+                if (confirm('الرقم السري غير صحيح! هل تريد إعادة المحاولة؟')) {
+                    document.getElementById('passwordInput').value = '';
+                } else {
+                    closePasswordModal();
+                }
+            }
+        }
+
+        function executePendingAction() {
+            switch (pendingAction) {
+                case 'addCategory': addCategory(); break;
+                case 'addItem': addItem(); break;
+                default: handleCategoryAction(pendingAction); break;
+            }
+        }
+
+        function displayCategories() {
+            const container = document.getElementById('categoryButtons');
+            container.innerHTML = categories.map(category => `
+                <div class="category-btn" style="background:${category.color}" onclick="showCategory('${category.name}')">
+                    ${category.name}
+                    <button class="dropdown-btn" onclick="toggleCategorySettings(this)">⚙️</button>
+                    <div class="category-settings">
+                        <button onclick="showPasswordModal('editCategory_${category.name}')">✏️ تعديل الاسم</button>
+                        <button onclick="showPasswordModal('changeColor_${category.name}')">🎨 تغيير اللون</button>
+                        <button onclick="showPasswordModal('deleteCategory_${category.name}')">🗑️ حذف القسم</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function toggleCategorySettings(btn) {
+            const settings = btn.parentNode.querySelector('.category-settings');
+            settings.style.display = settings.style.display === 'flex' ? 'none' : 'flex';
+        }
+
+        function handleCategoryAction(action) {
+            const [actionType, categoryName] = action.split('_');
+            const category = categories.find(c => c.name === categoryName);
+
+            switch (actionType) {
+                case 'editCategory':
+                    const newName = prompt('الاسم الجديد:', category.name);
+                    if (newName) category.name = newName;
+                    break;
+
+                case 'changeColor':
+                    const newColor = prompt('اللون الجديد (#hex):', category.color);
+                    if (newColor) category.color = newColor;
+                    break;
+
+                case 'deleteCategory':
+                    if (confirm(`هل تريد حذف ${categoryName}؟`)) {
+                        categories = categories.filter(c => c.name !== categoryName);
+                        menuItems = menuItems.filter(i => i.category !== categoryName);
+                    }
+                    break;
+            }
+            saveData();
+            displayCategories();
+            displayMenu();
+        }
+
+        function addCategory() {
+            const name = prompt('اسم القسم الجديد:');
+            if (name) {
+                const color = prompt('لون القسم (#hex):');
+                categories.push({ name, color });
+                saveData();
+                displayCategories();
+            }
+        }
+
+        function addItem() {
+            const category = prompt('اسم القسم:');
+            if (!categories.some(c => c.name === category)) return alert('القسم غير موجود!');
+
+            const name = prompt('اسم الصنف:');
+            const price = prompt('السعر:');
+            const image = prompt('رابط الصورة:');
+            const color = prompt('لون البطاقة (#hex):');
+
+            menuItems.push({ category, name, price, image, color });
+            saveData();
+            displayMenu();
+        }
+
+        function displayMenu() {
+            const container = document.getElementById('menuContainer');
+            container.innerHTML = categories.map(category => `
+                <div class="menu-section" id="${category.name}">
+                    <h2 style="color:${category.color}">${category.name}</h2>
+                    ${menuItems.filter(i => i.category === category.name).map(item => `
+                        <div class="menu-item" style="background:${item.color}">
+                            <img src="${item.image}">
+                            <h3>${item.name}</h3>
+                            <p>السعر: ${item.price} جنيه</p>
+                            <button class="dropdown-btn" onclick="toggleItemSettings(this)">⚙️</button>
+                            <div class="dropdown">
+                                <button onclick="showPasswordModal('editItemName_${item.name}')">✏️ تعديل الاسم</button>
+                                <button onclick="showPasswordModal('editItemPrice_${item.name}')">💲 تعديل السعر</button>
+                                <button onclick="showPasswordModal('editItemColor_${item.name}')">🎨 تغيير اللون</button>
+                                <button onclick="showPasswordModal('deleteItem_${item.name}')">🗑️ حذف</button>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+            `).join('');
+            if (categories.length > 0) showCategory(categories[0].name);
+        }
+
+        function toggleItemSettings(btn) {
+            const dropdown = btn.nextElementSibling;
+            dropdown.style.display = dropdown.style.display === 'flex' ? 'none' : 'flex';
+        }
+
+        function showCategory(categoryName) {
+            document.querySelectorAll('.menu-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            const section = document.getElementById(categoryName);
+            if (section) section.classList.add('active');
+        }
+
+        function editItemName(itemName) {
+            const item = menuItems.find(i => i.name === itemName);
+            item.name = prompt('الاسم الجديد:', item.name);
+            saveData();
+            displayMenu();
+        }
+
+        function editItemPrice(itemName) {
+            const item = menuItems.find(i => i.name === itemName);
+            item.price = prompt('السعر الجديد:', item.price);
+            saveData();
+            displayMenu();
+        }
+
+        function editItemColor(itemName) {
+            const item = menuItems.find(i => i.name === itemName);
+            item.color = prompt('اللون الجديد (#hex):', item.color);
+            saveData();
+            displayMenu();
+        }
+
+        function deleteItem(itemName) {
+            if (confirm(`هل تريد حذف ${itemName}؟`)) {
+                menuItems = menuItems.filter(i => i.name !== itemName);
+                saveData();
+                displayMenu();
+            }
+        }
+
+        function goHome() {
+            window.location.href = "home.html";
+        }
+
+        // Initial load
+        displayCategories();
+        displayMenu();
+    </script>
+</body>
+</html>
